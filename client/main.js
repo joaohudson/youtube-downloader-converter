@@ -2,11 +2,12 @@
 
     const urlField = document.getElementById('urlField');
     const downloadButton = document.getElementById('downloadButton');
+    const formatSelect = document.getElementById('formatSelect');
 
     const menuDiv = document.getElementById('menu');
     const loadingDiv = document.getElementById('loading');
 
-    const baseUrl = 'http://localhost:8082/download?url=';
+    const baseUrl = 'http://localhost:8082/download';
 
     function displayLoading(active){
         if(active){
@@ -31,13 +32,14 @@
 
     downloadButton.onclick = async () => {
         try{
+            const type = formatSelect.value;
             displayLoading(true);
-            const url = await download(baseUrl + urlField.value);
+            const url = await download(baseUrl + '?type=' + type + '&url=' +urlField.value);
             displayLoading(false);
 
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'video.mp4';
+            a.download = type == 'mp4' ? 'video.mp4' : 'audio.mp3';
             a.click();
             a.remove();
         }
