@@ -19,9 +19,27 @@ app.get('/download', (req, res) => {
     }
 });
 
+app.get('/name', async (req, res) => {
+    try{
+        res.send(await getVideoName(req.query.url));
+    }
+    catch(e){
+        res.status(e.status).send(e.message);
+    }
+});
+
 app.listen(process.env.PORT, () =>{
     console.log('Server listen in port ' + process.env.PORT);
 });
+
+async function getVideoName(url){
+    try{
+        const info = await ytdl.getInfo(url);
+        return info.player_response.videoDetails.title;
+    }catch(e){
+        throw {status: 400, message: 'Invalid url!' };
+    }
+}
 
 function downloadMp4(url, res){
     res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
