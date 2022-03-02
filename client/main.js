@@ -7,7 +7,7 @@
     const menuDiv = document.getElementById('menu');
     const loadingDiv = document.getElementById('loading');
 
-    const baseUrl = 'http://localhost:8082/download';
+    const baseUrl = window.location.href + 'download';
 
     function displayLoading(active){
         if(active){
