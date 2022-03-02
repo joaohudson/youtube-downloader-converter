@@ -51,6 +51,6 @@ function downloadMp4(url, res){
 function downloadMp3(url, res){
     res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
     ytdl(url, {filter: 'audioonly'})
-    .on('error', (err) => res.status(400).send(err))
+    .on('error', () => res.status(400).send('Invalid url!'))
     .pipe(res);
 }
