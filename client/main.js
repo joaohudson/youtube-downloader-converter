@@ -50,7 +50,7 @@
             return await response.json();
         }
 
-        return url;
+        return [url];
     }
 
     downloadButton.onclick = async () => {
