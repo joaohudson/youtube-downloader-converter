@@ -40,18 +40,34 @@
         return await response.text() + '.' + type;
     }
 
+    async function generateUrls(url){
+        if(url.includes('playlist?')){
+            const response = await fetch(baseUrl + 'playlist?url=' + url);
+            if(!response.ok){
+                throw 'Invalid url!';
+            }
+
+            return await response.json();
+        }
+
+        return url;
+    }
+
     downloadButton.onclick = async () => {
         try{
             const type = formatSelect.value;
             displayLoading(true);
-            const url = await download(baseUrl + 'download?type=' + type + '&url=' +urlField.value);
-            displayLoading(false);
+            const urls = await generateUrls(urlField.value);
+            for(const url of urls){
+                const blobUrl = await download(baseUrl + 'download?type=' + type + '&url=' +url);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = await getVideoName(baseUrl + 'name?url=' + url, type);
+                a.click();
+                a.remove();
+            }
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = await getVideoName(baseUrl + 'name?url=' + urlField.value, type);
-            a.click();
-            a.remove();
+            displayLoading(false);
         }
         catch(e){
             alert(e);

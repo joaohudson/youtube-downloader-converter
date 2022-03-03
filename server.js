@@ -2,10 +2,20 @@ require('dotenv/config');
 const express = require('express');
 const ytdl = require('ytdl-core');
 const path = require('path');
-const fs = require('fs');
+const {getPlayList} = require('./youtube-playlist');
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'client')));
+
+app.get('/playlist', async (req, res) => {
+    try{
+        const url = req.query.url;
+        res.send(await getPlayList(url));
+    }
+    catch(e){
+        res.status(400).send('Invalid url!');
+    }
+});
 
 app.get('/download', (req, res) => {
     const url = req.query.url;
