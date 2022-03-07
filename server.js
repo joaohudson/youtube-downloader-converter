@@ -47,6 +47,7 @@ async function getVideoName(url){
         const info = await ytdl.getInfo(url);
         return info.player_response.videoDetails.title;
     }catch(e){
+        console.log(e);
         throw {status: 400, message: 'Invalid url!' };
     }
 }
@@ -54,13 +55,19 @@ async function getVideoName(url){
 function downloadMp4(url, res){
     res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
     ytdl(url, {format: 'mp4'})
-    .on('error', () => res.status(400).send('Invalid url!'))
+    .on('error', (err) => {
+        console.log(err);
+        res.status(400).send('Invalid url!');
+    })
     .pipe(res);
 }
 
 function downloadMp3(url, res){
-    res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
+    res.setHeader('Content-Disposition', 'attachment; filename=audio.mp3');
     ytdl(url, {filter: 'audioonly'})
-    .on('error', () => res.status(400).send('Invalid url!'))
+    .on('error', (err) => {
+        console.log(err);
+        res.status(400).send('Invalid url!');
+    })
     .pipe(res);
 }
