@@ -32,6 +32,7 @@ async function getPlayList(url){
         return Array.from(new Set(urls));
     }
     catch(e){
+        console.log('[youtube-playlist.js] - [getPlayList]');
         console.log(e);
         throw 'Invalid url!';
     }
