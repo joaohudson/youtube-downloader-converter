@@ -55,7 +55,7 @@ async function getVideoName(url){
 
 function downloadMp4(url, res){
     res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
-    ytdl(url, {format: 'mp4'})
+    ytdl(url, {format: 'mp4', filter: 'audioandvideo'})
     .on('error', (err) => {
         console.log('[server.js] - [downloadMp4]');
         console.log(err);
