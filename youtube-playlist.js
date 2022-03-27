@@ -23,6 +23,8 @@ async function getPlayList(url){
         throw 'Invalid url!';
 
     const checkVideo = url.includes('://music.youtube.com') ? checkYoutubeMusicVideo : checkYoutubeVideo;
+    //TODO: remover
+    console.log('>>>' + checkVideo.name);
 
     try{
         const driver = await new Builder().forBrowser('chrome').build();
@@ -36,6 +38,8 @@ async function getPlayList(url){
             if(checkVideo(href)){
                 urls.push(href);
             }
+            //TODO: remover
+            console.log('>>>' + href);
         }
 
         await driver.close();
