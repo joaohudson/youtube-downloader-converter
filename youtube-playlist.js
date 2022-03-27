@@ -6,6 +6,14 @@ const YOUTUBE_LOAD_TIME = 5000;
 
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
 
+function checkYoutubeVideo(url){
+    return url && url.includes('/watch?v=') && url.includes('index=');
+}
+
+function checkYoutubeMusicVideo(url){
+    return url && url.includes('/watch?v=');
+}
+
 async function delay(time){
     return new Promise((res) => setTimeout(res, time));
 }
@@ -13,6 +21,8 @@ async function delay(time){
 async function getPlayList(url){
     if(!url.includes('youtube.com'))
         throw 'Invalid url!';
+
+    const checkVideo = url.includes('://music.youtube.com') ? checkYoutubeMusicVideo : checkYoutubeVideo;
 
     try{
         const driver = await new Builder().forBrowser('chrome').build();
@@ -23,7 +33,7 @@ async function getPlayList(url){
 
         for(const a of links){
             const href = await a.getAttribute('href');
-            if(href && href.includes('/watch?v=') && href.includes('index=')){
+            if(checkVideo(href)){
                 urls.push(href);
             }
         }
