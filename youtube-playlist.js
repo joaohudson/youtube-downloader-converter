@@ -2,7 +2,7 @@ const {Builder, By} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 
-const YOUTUBE_LOAD_TIME = 5000;
+const YOUTUBE_LOAD_TIME = 10000;
 
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
 
