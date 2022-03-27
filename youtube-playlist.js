@@ -2,7 +2,7 @@ const {Builder, By} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 
-const YOUTUBE_LOAD_TIME = 10000;
+const YOUTUBE_LOAD_TIME = 5000;
 
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
 
@@ -30,7 +30,7 @@ async function getPlayList(url){
         const driver = await new Builder().forBrowser('chrome').build();
         await driver.get(url);
         await delay(YOUTUBE_LOAD_TIME);
-        const links = await driver.findElements(By.tagName('a'));
+        const links = await driver.findElements(By.css('a'));
         const urls = [];
 
         for(const a of links){
