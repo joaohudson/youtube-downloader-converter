@@ -30,6 +30,7 @@ async function getPlayList(url){
         const driver = await new Builder().forBrowser('chrome').build();
         await driver.get(url);
         await delay(YOUTUBE_LOAD_TIME);
+        const body = await driver.findElements(By.css('body'));
         const links = await driver.findElements(By.css('a'));
         const urls = [];
 
@@ -41,6 +42,8 @@ async function getPlayList(url){
             //TODO: remover
             console.log('>>>' + href);
         }
+
+        urls.push(await body[0].takeScreenshot());
 
         await driver.close();
         return Array.from(new Set(urls));
