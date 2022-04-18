@@ -20,6 +20,10 @@ async function delay(time){
 }
 
 async function getPlayListTitle(url){
+    if(!url.includes('youtube.com')){
+        throw 'Invalid url!';
+    }
+    
     try{
         const response = await get(url);
         const page = response.data;
