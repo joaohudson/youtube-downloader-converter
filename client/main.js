@@ -53,16 +53,27 @@
         return [url];
     }
 
+    async function getPlayListTitle(url){
+        const response = await fetch(baseUrl + 'playlist-title?url=' + url);
+
+        if(!response.ok){
+            throw await response.text();
+        }
+
+        return await response.text();
+    }
+
     downloadButton.onclick = async () => {
         try{
             const type = formatSelect.value;
             displayLoading(true);
             const urls = await generateUrls(urlField.value);
+            const prefix = urls.length == 1 ? '' : '[' + await getPlayListTitle(urlField.value) + '] - ';
             for(const url of urls){
                 const blobUrl = await download(baseUrl + 'download?type=' + type + '&url=' +url);
                 const a = document.createElement('a');
                 a.href = blobUrl;
-                a.download = await getVideoName(baseUrl + 'name?url=' + url, type);
+                a.download = prefix + await getVideoName(baseUrl + 'name?url=' + url, type);
                 a.click();
                 a.remove();
             }

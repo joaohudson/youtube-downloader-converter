@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "axios": "^0.26.1",
-    "chromedriver": "^98.0.1",
+    "chromedriver": "^100.0.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "selenium-webdriver": "^4.1.1",
