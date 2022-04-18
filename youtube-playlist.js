@@ -1,6 +1,7 @@
 const {Builder, By} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
+const {get} = require('axios');
 
 const YOUTUBE_LOAD_TIME = 5000;
 
@@ -16,6 +17,20 @@ function checkYoutubeMusicVideo(url){
 
 async function delay(time){
     return new Promise((res) => setTimeout(res, time));
+}
+
+async function getPlayListTitle(url){
+    try{
+        const response = await get(url);
+        const page = response.data;
+        
+        const openTitleTag = '<title>';
+        const begin = page.indexOf(openTitleTag) + openTitleTag.length;
+        const end = page.indexOf(' - YouTube</title>');
+        return page.substring(begin, end);
+    }catch(e){
+        throw 'Invalid url!';
+    }
 }
 
 async function getPlayList(url){
@@ -49,5 +64,6 @@ async function getPlayList(url){
 }
 
 module.exports = {
-    getPlayList
+    getPlayList,
+    getPlayListTitle
 };
