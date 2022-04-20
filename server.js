@@ -3,6 +3,7 @@ const express = require('express');
 const ytdl = require('ytdl-core');
 const path = require('path');
 const {getPlayList, getPlayListTitle} = require('./youtube-playlist');
+const {fetchClients} = require('./clients');
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'client')));
@@ -46,6 +47,11 @@ app.get('/name', async (req, res) => {
     catch(e){
         res.status(e.status).send(e.message);
     }
+});
+
+app.get('/clients', async (req, res) => {
+    const clients = await fetchClients();
+    res.send(clients);
 });
 
 app.listen(process.env.PORT, () =>{

@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Android Version",
+        "downloadName": "YouTube Downloader and Converter.apk",
+        "repository": "youtube-downloader-converter-mobile"
+    },
+    {
+        "name": "Windows Version",
+        "downloadName": "YouTube Downloader And Converter.zip",
+        "repository": "youtube-downloader-converter-desktop"
+    }
+]
