@@ -48,30 +48,26 @@ async function checkUpdate(clientName, version){
 
         const lastRelease = response.data[0];
         const tagName = lastRelease.tag_name;
+        const description = lastRelease.body ? lastRelease.body : '';
 
         const lastVersion = tagName.substring(1).split('.');
         const currentVersion = version.split('.');
+        let updateInfo = UpdateInfo.None;
 
         if(lastVersion[0] > currentVersion[0]){
-            return {
-                info: UpdateInfo.Required
-            };
+            updateInfo = UpdateInfo.Required;
         }
         else if(lastVersion[1] > currentVersion[1]){
-            return {
-                info: UpdateInfo.Feature
-            };
+            updateInfo = UpdateInfo.Feature;
         }
         else if(lastVersion[2] > currentVersion[2]){
-            return {
-                info: UpdateInfo.Correction
-            };
+            updateInfo = UpdateInfo.Correction;
         }
-        else{
-            return {
-                info: UpdateInfo.None
-            };
-        }
+
+        return {
+            updateInfo,
+            description
+        };
     }
     catch(e){
         console.log('[clients.js] - [checkUpdate]');
