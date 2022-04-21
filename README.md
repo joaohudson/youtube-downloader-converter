@@ -12,3 +12,6 @@ https://youtube-downloader-converter.herokuapp.com/
 
 ### Android Version
 https://github.com/joaohudson/youtube-downloader-converter-mobile
+
+### Windows Version
+https://github.com/joaohudson/youtube-downloader-converter-desktop
