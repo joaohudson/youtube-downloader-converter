@@ -8,7 +8,8 @@ Download videos in mp4 and mp3 format (music only) without advertisements or spa
 - Acess localhost:yourport in the browser
 
 ### Server Is Not Operating
-Because there have been changes in hosting costs
+Because there have been changes in hosting costs.
+We are working on it.
 
 ### Android Version
 https://github.com/joaohudson/youtube-downloader-converter-mobile
