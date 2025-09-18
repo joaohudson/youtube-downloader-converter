@@ -4,7 +4,10 @@ const ytdl = require('ytdl-core');
 const path = require('path');
 const {getPlayList, getPlayListTitle} = require('./youtube-playlist');
 const {fetchClients, checkUpdate} = require('./clients');
+const {Translator} = require('./translator');
 const app = express();
+
+const translator = new Translator();
 
 app.use(express.static(path.join(__dirname, 'client')));
 
@@ -14,7 +17,8 @@ app.get('/playlist', async (req, res) => {
         res.send(await getPlayList(url));
     }
     catch(e){
-        res.status(400).send('Invalid url!');
+        const dictionary = translator.getByRequest(req);
+        res.status(400).send(dictionary.invalidUrl);
     }
 });
 
@@ -24,7 +28,8 @@ app.get('/playlist-title', async (req, res) =>{
         res.send(await getPlayListTitle(url));
     }
     catch(e){
-        res.status(400).send('Invalid url!');
+        const dictionary = translator.getByRequest(req);
+        res.status(400).send(dictionary.invalidUrl);
     }
 });
 
@@ -33,10 +38,10 @@ app.get('/download', (req, res) => {
     const type = req.query.type;
 
     if(type == 'mp4'){
-        downloadMp4(url, res);
+        downloadMp4(url, res, req);
     }
     else if(type == 'mp3'){
-        downloadMp3(url, res);
+        downloadMp3(url, res, req);
     }
 });
 
@@ -74,24 +79,26 @@ async function getVideoName(url){
     }
 }
 
-function downloadMp4(url, res){
+function downloadMp4(url, res, req){
     res.setHeader('Content-Disposition', 'attachment; filename=video.mp4');
     ytdl(url, {format: 'mp4', filter: 'audioandvideo'})
     .on('error', (err) => {
+        const dictionary = translator.getByRequest(req);
         console.log('[server.js] - [downloadMp4]');
         console.log(err);
-        res.status(400).send('Invalid url!');
+        res.status(400).send(dictionary.invalidUrl);
     })
     .pipe(res);
 }
 
-function downloadMp3(url, res){
+function downloadMp3(url, res, req){
     res.setHeader('Content-Disposition', 'attachment; filename=audio.mp3');
     ytdl(url, {filter: 'audioonly'})
     .on('error', (err) => {
+        const dictionary = translator.getByRequest(req);
         console.log('[server.js] - [downloadMp3]');
         console.log(err);
-        res.status(400).send('Invalid url!');
+        res.status(400).send(dictionary.invalidUrl);
     })
     .pipe(res);
 }
