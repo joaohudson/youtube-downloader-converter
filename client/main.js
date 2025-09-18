@@ -6,7 +6,6 @@
 
     const menuDiv = document.getElementById('menu');
     const loadingDiv = document.getElementById('loading');
-    const clientsDiv = document.getElementById('clientsDiv');
 
     const baseUrl = window.location.href;
     
@@ -19,17 +18,6 @@
             loadingDiv.style.display = 'none';
         }
     }
-
-    async function fetchClients(){
-        const response = await fetch(baseUrl + 'clients');
-
-        if(!response.ok){
-            throw await response.text();
-        }
-
-        return await response.json();
-    }
-
 
     async function download(url){
         const response = await fetch(url);
@@ -97,31 +85,4 @@
             displayLoading(false);
         }
     }
-
-    async function main(){
-        const clients = await fetchClients();
-
-        for(let i = 0; i < clients.length - 1; i++){
-            const client = clients[i];
-            const a = document.createElement('a');
-            a.href = client.url;
-            a.download = client.downloadName;
-            a.innerText = client.name;
-            clientsDiv.appendChild(a);
-
-            const separator = document.createElement('label');
-            separator.id = 'separator';
-            separator.innerText = '|';
-            clientsDiv.appendChild(separator);
-        }
-
-        const client = clients[clients.length - 1];
-        const a = document.createElement('a');
-        a.href = client.url;
-        a.download = client.downloadName;
-        a.innerText = client.name;
-        clientsDiv.appendChild(a);
-    }
-
-    main();
 })();
